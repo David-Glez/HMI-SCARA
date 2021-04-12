@@ -1,7 +1,7 @@
 import React from 'react';
 import {
     Route,
-    BrowserRouter,
+    HashRouter,
     Switch
 }from 'react-router-dom';
 
@@ -10,12 +10,12 @@ import Home from './layouts/Home'
 
 const Routes = () => {
     return(
-        <BrowserRouter>
+        <HashRouter>
             <Switch>
                 <Route exact path = '/' component = {Home} />
                 <Route exact path = '/mantenimiento' component = {Home} />
             </Switch>
-        </BrowserRouter>
+        </HashRouter>
     )
 }
 

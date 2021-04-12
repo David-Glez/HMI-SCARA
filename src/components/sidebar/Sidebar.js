@@ -14,6 +14,7 @@ const Sidebar = (props) => {
             </div>
             <div className = 'sidebar-wrapper'>
                 <div className="logo d-flex align-items-center justify-content-center">
+                    
                     <Link to = '/' className="simple-text text-center">
                         <img src={logo} id='logoAdmin' className = 'logoAdmin'/>
                     </Link>
