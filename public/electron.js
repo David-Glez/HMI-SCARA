@@ -7,6 +7,9 @@ const serialPort = require('./serial/serial-control.js');
 const dataBase = require('./database/db-actions.js')
 
 let ports = undefined;
+var arduinoResponse;
+var arduinoSafetyResponse;
+
 const enableConnection = async() => {
     ports = await serialPort.startConnection();
 }
@@ -33,6 +36,22 @@ serialPort.arduino_2.on('open', (error) => {
     arduino.error = error;
     arduino.open = serialPort.arduino_2.isOpen;
 })
+
+serialPort.arduino_safety.on('open', (error) => {
+    const arduino = ports.find(ard => ard.arduino == 3)
+    if(error){
+        console.log(error)
+        arduino.error = error;
+        arduino.open = serialPort.arduino_safety.isOpen;
+    }
+    arduino.error = error;
+    arduino.open = serialPort.arduino_safety.isOpen;
+})
+
+serialPort.arduino_1.on('data', (data) => {
+    arduinoResponse.send('sensors-status', data.toString())
+})
+
 
 let mainWindow;
 
@@ -97,6 +116,20 @@ ipc.handle('get-actuators-list', (e, args) => {
     return response;
 });
 
-ipc.on('write-arduino', (e, args) => {
-    console.log(args)
+ipc.handle('write-arduino', (e, args) => {
+    serialPort.writeToArduino(args)
 })
+
+ipc.on('request-sensors-status', (e, args) => {
+    serialPort.getSensorsStatus()
+    arduinoResponse = e.sender
+})
+
+ipc.on('enable-arduino-safety', (e, args) => {
+    serialPort.enableArduinoSafety();
+    arduinoSafetyResponse = e.sender
+})
+ipc.handle('disable-arduino-safety', (e, args) => {
+    serialPort.disabledArduinoSafety()
+})
+

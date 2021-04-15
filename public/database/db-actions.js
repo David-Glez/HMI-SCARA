@@ -33,8 +33,9 @@ const getActuatorsList = async() => {
                     inner join components on components.id = motores.component`,
         bombas: `select * from bombas
                     inner join components on components.id = bombas.component`,
-        sensores: `select * from sensores
-                    inner join components on components.id = sensores.component`,
+        sensores: `select sensores.*, components.*, arduinos.name as arduino_name from sensores
+                    inner join components on components.id = sensores.component
+                    inner join arduinos on arduinos.id = sensores.arduino`,
         componentes: 'select * from components' 
     }
 

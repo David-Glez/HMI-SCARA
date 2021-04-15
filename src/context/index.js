@@ -1,7 +1,8 @@
 import {useSCARAState, useSCARADispatch, SCARAProvider} from './context';
 import {
     loadDataFromElectron,
-    writeToSerial
+    writeToSerial,
+    getSensorsStatus
 } from './actions';
 
 export{
@@ -9,5 +10,6 @@ export{
     useSCARADispatch,
     useSCARAState,
     loadDataFromElectron,
-    writeToSerial
+    writeToSerial,
+    getSensorsStatus
 }

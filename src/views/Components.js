@@ -1,6 +1,6 @@
 import React from 'react';
 
-import ComponentsCard from '../components/cards/ComponentsCard';
+import ComponentsTable from '../components/tables/ComponentsTable';
 
 const Components = (props) => {
 
@@ -10,7 +10,7 @@ const Components = (props) => {
             <div className = 'container-fluid'>
                 <div className = 'row'>
                     <div className = 'col-md-12'>
-                        <ComponentsCard />
+                        <ComponentsTable />
                     </div>
                 </div>
             </div>

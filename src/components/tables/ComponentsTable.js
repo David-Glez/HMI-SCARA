@@ -1,7 +1,7 @@
 import React from 'react';
 import {useSCARAState} from '../../context';
 
-const ComponentsCard = (props) => {
+const ComponentsTable = (props) => {
 
     const settings = useSCARAState();
     const components = settings.components;
@@ -58,4 +58,4 @@ const ComponentsCard = (props) => {
     )
 }
 
-export default ComponentsCard;
+export default ComponentsTable;
