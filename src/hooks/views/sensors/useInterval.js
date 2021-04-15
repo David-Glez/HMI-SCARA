@@ -1,23 +1,21 @@
 import {useRef, useEffect} from 'react';
 
-const useInterval = (arduino1Callback, arduinoSafetyCallback, delay) => {
-    const arduino1 = useRef();
-    const safety = useRef();
+const useInterval = (arduino1, delay) => {
+    const arduinoCallback = useRef();
 
     useEffect(() => {
-        arduino1.current = arduino1Callback;
-        safety.current = arduinoSafetyCallback;
+        arduinoCallback.current = arduino1;
     });
 
     useEffect(() => {
-        const refresh = () => {
-            arduino1.current();
+        const callArduino = () => {
+            arduinoCallback.current();
         };
-        let intervalo = setInterval(refresh, delay);
-
+        
+        let interval = setInterval(callArduino, delay);
+        
         return () => {
-            safety.current();
-            clearInterval(intervalo)
+            clearInterval(interval)
         }
     }, []);
 }

@@ -2,7 +2,8 @@ const {app, BrowserWindow} = require('electron');
 const isDev = require('electron-is-dev');
 const path = require('path');
 const ipc = require('electron').ipcMain;
-
+const ByteLength = require('@serialport/parser-byte-length')
+const r = require('restructure');
 const serialPort = require('./serial/serial-control.js');
 const dataBase = require('./database/db-actions.js')
 
@@ -48,8 +49,35 @@ serialPort.arduino_safety.on('open', (error) => {
     arduino.open = serialPort.arduino_safety.isOpen;
 })
 
+const Sensors = new r.Struct({
+    encoderPos: r.int32le,
+    detected: new r.Boolean(r.uint8),
+    adcVal: r.int16le,
+    limitReached: new r.Boolean(r.uint8)
+});
+
+const parser = serialPort.arduino_safety.pipe(new ByteLength({length:  Sensors.size()}))
+
+/*function toHexString(byteArray) {
+    var s = '';
+
+    byteArray.forEach(function(byte) {
+        s += ('0' + (byte & 0xFF).toString(16)).slice(-2).toUpperCase();
+        s += "\t";
+    });
+
+    return s;
+}*/
+
 serialPort.arduino_1.on('data', (data) => {
     arduinoResponse.send('sensors-status', data.toString())
+})
+
+parser.on('data', (data) => {
+    //console.log(toHexString(data));
+    let stream = new r.DecodeStream(data);
+    let sensors = Sensors.decode(stream); 
+    arduinoSafetyResponse.send('sensors-safety-status', sensors)
 })
 
 
@@ -125,11 +153,9 @@ ipc.on('request-sensors-status', (e, args) => {
     arduinoResponse = e.sender
 })
 
-ipc.on('enable-arduino-safety', (e, args) => {
-    serialPort.enableArduinoSafety();
+ipc.on('request-sensors-safety', (e, args) => {
+    serialPort.getSensorsSafety();
     arduinoSafetyResponse = e.sender
 })
-ipc.handle('disable-arduino-safety', (e, args) => {
-    serialPort.disabledArduinoSafety()
-})
+
 

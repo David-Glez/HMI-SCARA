@@ -1,4 +1,5 @@
 import React from 'react';
+import StateSensor from '../buttons/StateSensor';
 
 const SensorsTable = (props) => {
 
@@ -39,7 +40,9 @@ const SensorsTable = (props) => {
                                     <td>{item.component}</td>
                                     <td>{item.arduino_name}</td>
                                     <td>{item.description}</td>
-                                    <td>{item.value}</td>
+                                    <td>
+                                        <StateSensor sensor = {item} />
+                                    </td>
                                     <td></td>
                                 </tr>
                             )

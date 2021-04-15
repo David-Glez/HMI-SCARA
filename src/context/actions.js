@@ -3,7 +3,7 @@ const loadDataFromElectron = async(dispatch) => {
     try{
         actuators = await window.api.getActuatorsList();
         ports = await window.api.getEnabledSerial();
-        console.log(ports)
+
         arduinos = actuators.arduinos;
         peristaltics = actuators.bombas.filter(i => i.type == 'peristaltic');
         diaphragms = actuators.bombas.filter(i => i.type == 'diaphragm');
@@ -37,12 +37,16 @@ const writeToSerial = (arduino, code) => {
 }
 
 const getSensorsStatus = () => {
-    console.log(`Requesting data from sensors`)
     window.api.requestSensorsStatus()
+}
+
+const getSensorsSafety = () => {
+    window.api.requestSensorsSafety()
 }
 
 export {
     loadDataFromElectron,
     writeToSerial,
-    getSensorsStatus
+    getSensorsStatus,
+    getSensorsSafety
 }

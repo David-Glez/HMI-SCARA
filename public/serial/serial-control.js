@@ -2,35 +2,11 @@ const {app} = require('electron');
 const serialPort = require('serialport');
 const dotenv = require('dotenv');
 const path = require('path');
-const ByteLength = require('@serialport/parser-byte-length')
-const r = require('restructure');
-//const ArduinoSensors = require('./sensors_arduino_safety.js');
 
 const dotenvLoaded = !app.isPackaged ? dotenv.config({path: path.join(app.getAppPath(), '/.env')}) : dotenv.config({path: path.join(app.getAppPath(), '/.env.production')});
 
 if (dotenvLoaded.error) {
   throw dotenvLoaded.error
-}
-
-// var safetySensors = new ArduinoSensors(process.env.PORT_ARDUINO_SAFETY)
-// safetySensors.setUpdateInterval(1000)
-
-const Sensors = new r.Struct({
-    encoderPos: r.int32le,
-    detected: new r.Boolean(r.uint8),
-    adcVal: r.int16le,
-    limitReached: new r.Boolean(r.uint8)
-});
-
-function toHexString(byteArray) {
-    var s = '';
-
-    byteArray.forEach(function(byte) {
-        s += ('0' + (byte & 0xFF).toString(16)).slice(-2).toUpperCase();
-        s += "\t";
-    });
-
-    return s;
 }
 
 const portsAvailables = [];
@@ -50,8 +26,6 @@ const arduino_safety = new serialPort(process.env.PORT_ARDUINO_SAFETY, {
     baudRate: 115200,
     autoOpen: false
 })
-
-const parser = arduino_safety.pipe(new ByteLength({length:  Sensors.size()}))
 
 const writeToArduino = (params) => {
     console.log('write to arduino')
@@ -73,17 +47,9 @@ const getSensorsStatus = () => {
     arduino_1.flush();
 }
 
-const enableArduinoSafety = () => {
-     //  write to arduino safety to get banco de pruebas sensor's status
-     if(!safetySensors.isUpdating){
-        safetySensors.connect();
-        safetySensors.startAutoUpdating();
-    }
-}
-
-const disabledArduinoSafety = () => {
-    safetySensors.disconnect();
-    safetySensors.stopAutoUpdating();
+const getSensorsSafety = () => {
+    arduino_safety.write("g\0");
+    arduino_safety.flush();
 }
 
 const connectArduino = (arduino) => {
@@ -174,8 +140,7 @@ module.exports = {
     startConnection,
     writeToArduino,
     getSensorsStatus,
-    enableArduinoSafety,
-    disabledArduinoSafety,
+    getSensorsSafety,
     arduino_1,
     arduino_2,
     arduino_safety
