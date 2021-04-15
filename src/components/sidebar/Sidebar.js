@@ -1,6 +1,6 @@
 import React from 'react';
 import logo from '../../assets/img/roboshot-logo.png';
-import {Link} from 'react-router-dom';
+import {Link, useLocation} from 'react-router-dom';
 import {Nav} from 'react-bootstrap';
 import {FontAwesomeIcon} from '@fortawesome/react-fontawesome';
 
@@ -36,6 +36,12 @@ const Sidebar = (props) => {
                         <Link to = '/sensores' className="nav-link" >
                             <FontAwesomeIcon icon = 'expand-alt' className = 'mr-3' />
                             <p>Sensores</p>
+                        </Link>
+                    </li>
+                    <li className = {path == '/componentes' ? 'active' : ''}>
+                        <Link to = '/componentes' className="nav-link" >
+                            <FontAwesomeIcon icon = 'microchip' className = 'mr-3' />
+                            <p>Componentes</p>
                         </Link>
                     </li>
                 </Nav>

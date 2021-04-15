@@ -1,6 +1,38 @@
 const {app, BrowserWindow} = require('electron');
 const isDev = require('electron-is-dev');
 const path = require('path');
+const ipc = require('electron').ipcMain;
+
+const serialPort = require('./serial/serial-control.js');
+const dataBase = require('./database/db-actions.js')
+
+let ports = undefined;
+const enableConnection = async() => {
+    ports = await serialPort.startConnection();
+}
+enableConnection();
+
+serialPort.arduino_1.on('open', (error) => {
+    const arduino = ports.find(ard => ard.arduino == 1);
+    if(error){
+        console.log(error);
+        arduino.error = error;
+        arduino.open = serialPort.arduino_1.isOpen;
+    }
+    arduino.error = error;
+    arduino.open = serialPort.arduino_1.isOpen;
+})
+
+serialPort.arduino_2.on('open', (error) => {
+    const arduino = ports.find(ard => ard.arduino == 2)
+    if(error){
+        console.log(error)
+        arduino.error = error;
+        arduino.open = serialPort.arduino_1.isOpen;
+    }
+    arduino.error = error;
+    arduino.open = serialPort.arduino_2.isOpen;
+})
 
 let mainWindow;
 
@@ -22,7 +54,7 @@ const createWindow = () => {
     );
     
     mainWindow.setIcon(
-        path.join(__dirname, 'favicon.ico')
+        path.join(__dirname, '/icon.png')
     );
     
     if(isDev){
@@ -49,3 +81,22 @@ app.on('activate', () => {
         createWindow();
     }
 });
+
+/////////////////////////////////////////////////////////////////////////////////////////////////////////
+/*
+*       aciones por realizar en la base de datos
+*/
+/////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+ipc.handle('get-enabled-serial', (e, args) => {
+    return ports;
+});
+
+ipc.handle('get-actuators-list', (e, args) => {
+    const response = dataBase.getActuatorsList();
+    return response;
+});
+
+ipc.on('write-arduino', (e, args) => {
+    console.log(args)
+})

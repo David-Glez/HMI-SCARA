@@ -7,11 +7,17 @@ import NavBar from '../components/navbar/Navbar';
 import Dashboard from '../views/Dashboard';
 import Maintenance from '../views/Maintenance';
 import Sensors from '../views/Sensors';
+import Components from '../views/Components';
+
+//  hook
+import useHome from '../hooks/layouts/useHome';
 
 const Home = (props) => {
 
     const mainPanel = useRef();
     const location = useLocation();
+
+    useHome();
 
     return(
         <>
@@ -21,8 +27,9 @@ const Home = (props) => {
                 <NavBar location = {location} />
                 <Switch>
                     <Route exact path = '/' component = {Dashboard} />
-                    <Route exact path = '/mantenimiento' component = {Maintenance} />
-                    <Route exact path = '/sensores' component = {Sensors} />
+                    <Route path = '/mantenimiento' component = {Maintenance} />
+                    <Route path = '/sensores' component = {Sensors} />
+                    <Route path = '/componentes' component = {Components} />
                 </Switch>
             </div>
         </div>

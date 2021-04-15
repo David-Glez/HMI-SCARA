@@ -1,12 +1,12 @@
-import React, {createContext, useContext, useReduce} from 'react';
+import React, {createContext, useContext, useReducer} from 'react';
 import {initialState, SCARAReducer} from './reducer'
 
-const SCARAStateContext = createContext();
-const SCARADispatchContext = createContext();
+const ScaraStateContext = createContext();
+const ScaraDispatchContext = createContext();
 
 //  customs hooks to use context
 const useSCARAState = () => {
-    const context = useContext(SCARAStateContext);
+    const context = useContext(ScaraStateContext);
     if(context === undefined){
         throw new Error("useSCARAState must be used within a SCARAProvider");
     }
@@ -15,7 +15,7 @@ const useSCARAState = () => {
 }
 
 const useSCARADispatch = () => {
-    const context = useContext(SCARADispatchContext);
+    const context = useContext(ScaraDispatchContext);
     if(context === undefined){
         throw new Error("useSCARADispatch must be used whitin a SCARAProvider");
     }
