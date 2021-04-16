@@ -28,7 +28,6 @@ const SensorsTable = (props) => {
                             <th>Arduino</th>
                             <th>Descripción</th>
                             <th>Estado</th>
-                            <th>Valor</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -43,7 +42,6 @@ const SensorsTable = (props) => {
                                     <td>
                                         <StateSensor sensor = {item} />
                                     </td>
-                                    <td></td>
                                 </tr>
                             )
                         })}
@@ -56,7 +54,6 @@ const SensorsTable = (props) => {
                             <th>Arduino</th>
                             <th>Descripción</th>
                             <th>Estado</th>
-                            <th>Valor</th>
                         </tr>
                     </tfoot>
                 </table>

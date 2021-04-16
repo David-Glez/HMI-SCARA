@@ -48,7 +48,7 @@ const useSensors = () => {
         })
     }
 
-    useInterval(getSensors, 500)
+    useInterval(getSensors, 50)
 
     return {
         sensores

@@ -73,6 +73,15 @@
       ".env",
       ".env.production"
     ],
+    "extraResources": [
+      {
+        "from": "./database/",
+        "to": "database",
+        "filter": [
+          "**/*"
+        ]
+      }
+    ],
     "win": {
       "icon": "./build/icon.png"
     }
