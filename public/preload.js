@@ -12,5 +12,6 @@ contextBridge.exposeInMainWorld('api', {
     requestSensorsSafety: (args) => ipcRenderer.send('request-sensors-safety'),
     sensorsSafetyStatus: (callback, args) => ipcRenderer.on('sensors-safety-status', (e, data) => {
         callback(e, data)
-    })
+    }),
+    reconnectPort: (args) => ipcRenderer.invoke('reconnect-arduino', args),
 });

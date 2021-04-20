@@ -20,8 +20,6 @@ serialPort.arduino_1.on('open', (error) => {
     const arduino = ports.find(ard => ard.arduino == 1);
     if(error){
         console.log(error);
-        arduino.error = error;
-        arduino.open = serialPort.arduino_1.isOpen;
     }
     arduino.error = error;
     arduino.open = serialPort.arduino_1.isOpen;
@@ -31,8 +29,6 @@ serialPort.arduino_2.on('open', (error) => {
     const arduino = ports.find(ard => ard.arduino == 2)
     if(error){
         console.log(error)
-        arduino.error = error;
-        arduino.open = serialPort.arduino_1.isOpen;
     }
     arduino.error = error;
     arduino.open = serialPort.arduino_2.isOpen;
@@ -42,8 +38,6 @@ serialPort.arduino_safety.on('open', (error) => {
     const arduino = ports.find(ard => ard.arduino == 3)
     if(error){
         console.log(error)
-        arduino.error = error;
-        arduino.open = serialPort.arduino_safety.isOpen;
     }
     arduino.error = error;
     arduino.open = serialPort.arduino_safety.isOpen;
@@ -80,6 +74,10 @@ parser.on('data', (data) => {
     arduinoSafetyResponse.send('sensors-safety-status', sensors)
 })
 
+serialPort.arduino_safety.on('error', (error) => {
+    console.log(`this error: ${error}`)
+    //serialPort.connectArduino(process.env.PORT_ARDUINO_SAFETY)
+})
 
 let mainWindow;
 
@@ -156,6 +154,10 @@ ipc.on('request-sensors-status', (e, args) => {
 ipc.on('request-sensors-safety', (e, args) => {
     serialPort.getSensorsSafety();
     arduinoSafetyResponse = e.sender
+})
+
+ipc.handle('reconnect-arduino', (e, args) => {
+    serialPort.connectArduino(args.arduino)
 })
 
 

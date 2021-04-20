@@ -33,7 +33,7 @@ const ArduinoCard = (props) => {
                 <hr></hr>
                 <div className="stats">
                 <i className="fas fa-redo mr-1"></i>
-                Mensaje: {(arduino.error == undefined) ? 'OK': arduino.error}
+                Estado: {arduino.isOpen ? 'OK': 'Desconectado'}
                 </div>
             </Card.Footer>
         </Card>

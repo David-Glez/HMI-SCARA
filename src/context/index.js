@@ -3,7 +3,9 @@ import {
     loadDataFromElectron,
     writeToSerial,
     getSensorsStatus,
-    getSensorsSafety
+    getSensorsSafety,
+    reconnect,
+    verifyPorts
 } from './actions';
 
 export{
@@ -13,5 +15,7 @@ export{
     loadDataFromElectron,
     writeToSerial,
     getSensorsStatus,
-    getSensorsSafety
+    getSensorsSafety,
+    reconnect,
+    verifyPorts
 }

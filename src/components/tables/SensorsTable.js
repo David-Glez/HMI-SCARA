@@ -18,6 +18,7 @@ const SensorsTable = (props) => {
                 </div>
             </div>
             <div className = 'card-body'>
+                
                 <div className ="table-responsive-md ">
                 <table className = 'table table-hover'>
                     <thead>

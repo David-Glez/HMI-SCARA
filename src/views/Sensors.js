@@ -4,7 +4,7 @@ import useSensors from '../hooks/views/sensors/useSensors';
 
 const Sensors = (props) => {
 
-    const {sensores} = useSensors()
+    const {sensores, closedPort} = useSensors()
 
     return(
         <>
@@ -12,7 +12,18 @@ const Sensors = (props) => {
             <div className = 'container-fluid'>
                 <div className = 'row'>
                     <div className = 'col-md-12'>
-                        <SensorsTable sensores = {sensores} />
+                        {(closedPort != undefined) && (
+                            <>
+                            {closedPort && (
+                                <div className = "alert alert-danger" role = "alert">
+                                    Puerto desconectado! Verifique conexión
+                                </div>
+                            )}
+                            </>
+                        )}
+                        <SensorsTable
+                            sensores = {sensores}
+                        />
                     </div>
                 </div>
             </div>

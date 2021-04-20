@@ -8,7 +8,12 @@ import DiaphragmsCard from '../components/cards/DiaphragmsCard';
 import MotorsCACard from '../components/cards/MotorsCACard';
 import PeristalticsCard from '../components/cards/PeristalticsCard';
 
+import {useSCARAState} from '../context';
+
 const Maintenance = (props) => {
+
+    const components = useSCARAState();
+    const arduinos = components.arduinos
 
     return(
         <>

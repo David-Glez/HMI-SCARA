@@ -11,18 +11,22 @@ if (dotenvLoaded.error) {
 
 const portsAvailables = [];
 
+let arduino1 = process.env.PORT_ARDUINO_1;
+let arduino2 = process.env.PORT_ARDUINO_2;
+let arduinoSafety = process.env.PORT_ARDUINO_SAFETY;
+
 //  Arduinos connection
-const arduino_1 = new serialPort(process.env.PORT_ARDUINO_1, {
+const arduino_1 = new serialPort(arduino1, {
     baudRate: 115200,
     autoOpen: false
 })
 
-const arduino_2 = new serialPort(process.env.PORT_ARDUINO_2, {
+const arduino_2 = new serialPort(arduino2, {
     baudRate: 115200,
     autoOpen: false
 })
 
-const arduino_safety = new serialPort(process.env.PORT_ARDUINO_SAFETY, {
+const arduino_safety = new serialPort(arduinoSafety, {
     baudRate: 115200,
     autoOpen: false
 })
@@ -56,21 +60,21 @@ const connectArduino = (arduino) => {
 
     let isOpen;
     switch(arduino){
-        case process.env.PORT_ARDUINO_1:
+        case arduino1:
             isOpen = arduino_1.isOpen;
             if(isOpen == false){
                 arduino_1.open();
             }
             isOpen = arduino_1.isOpen;
             break;
-        case process.env.PORT_ARDUINO_2:
+        case arduino2:
             isOpen = arduino_2.isOpen;
             if(isOpen == false){
                 arduino_2.open()
             }
             isOpen = arduino_2.isOpen;
             break;
-        case process.env.PORT_ARDUINO_SAFETY:
+        case arduinoSafety:
             isOpen = arduino_safety.isOpen;
             if(isOpen == false){
                 arduino_safety.open()
@@ -81,45 +85,68 @@ const connectArduino = (arduino) => {
     return isOpen;
 }
 
-//  open port if is necessary
+//  open port if necessary
 const checkPorts = (ports) => {
-    ports.forEach((item) => {
-        let isOpen;
-        let arduino;
-        switch(item.path){
-            case process.env.PORT_ARDUINO_1:
-                isOpen = connectArduino(item.path);
-                arduino = {
-                    arduino: 1,
-                    port: item.path,
-                    error: undefined,
-                    open: isOpen
-                }
-                break;
-            case process.env.PORT_ARDUINO_2:
-                isOpen = connectArduino(item.path);
-                arduino = {
-                    arduino: 2,
-                    port: item.path,
-                    error: undefined,
-                    open: isOpen
-                }
-                break;
-            case process.env.PORT_ARDUINO_SAFETY:
-                isOpen = connectArduino(item.path);
-                arduino = {
-                    arduino: 3,
-                    port: item.path,
-                    error: undefined,
-                    open: isOpen
-                }
-                break;
+
+    let arduino;
+    const findArduino1 = ports.find(i => i.path == arduino1);
+    const findArduino2 = ports.find(i => i.path == arduino2);
+    const findArduinoSafety = ports.find(i => i.path == arduinoSafety);
+
+    if(findArduino1 != undefined){
+        connectArduino(arduino1);
+        arduino = {
+            arduino: 1,
+            port: arduino1,
+            error: undefined,
+            open: undefined
         }
-        if(arduino != undefined){
-            portsAvailables.push(arduino)
+        portsAvailables.push(arduino)
+    }else{
+        arduino = {
+            arduino: 1,
+            port: arduino1,
+            error: undefined,
+            open: false
         }
-        
-    })
+        portsAvailables.push(arduino)
+    }
+    if(findArduino2 != undefined){
+        connectArduino(arduino2);
+        arduino = {
+            arduino: 2,
+            port: arduino2,
+            error: undefined,
+            open: undefined
+        }
+        portsAvailables.push(arduino)
+    }else{
+        arduino = {
+            arduino: 2,
+            port: arduino2,
+            error: undefined,
+            open: false
+        }
+        portsAvailables.push(arduino)
+    }
+    if(findArduinoSafety != undefined){
+        connectArduino(arduinoSafety);
+        arduino = {
+            arduino: 3,
+            port: arduinoSafety,
+            error: undefined,
+            open: undefined
+        }
+        portsAvailables.push(arduino)
+    }else{
+        arduino = {
+            arduino: 3,
+            port: arduinoSafety,
+            error: undefined,
+            open: false
+        }
+        portsAvailables.push(arduino)
+    }    
 }
 
 const startConnection = () => {
@@ -141,6 +168,7 @@ module.exports = {
     writeToArduino,
     getSensorsStatus,
     getSensorsSafety,
+    connectArduino,
     arduino_1,
     arduino_2,
     arduino_safety

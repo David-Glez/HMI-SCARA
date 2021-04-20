@@ -1,10 +1,11 @@
 const loadDataFromElectron = async(dispatch) => {
-    let actuators, ports, arduinos, peristaltics, diaphragms, components, servos, steppers, c_alterna, sensors;
+    let actuators, ports, peristaltics, diaphragms, components, servos, steppers, c_alterna, sensors;
+    const arduinos = [];
+
     try{
         actuators = await window.api.getActuatorsList();
         ports = await window.api.getEnabledSerial();
-
-        arduinos = actuators.arduinos;
+    
         peristaltics = actuators.bombas.filter(i => i.type == 'peristaltic');
         diaphragms = actuators.bombas.filter(i => i.type == 'diaphragm');
         components = actuators.componentes;
@@ -12,6 +13,18 @@ const loadDataFromElectron = async(dispatch) => {
         servos = actuators.motores.filter(i => i.type == 'servo');
         c_alterna = actuators.motores.filter(i => i.type == 'CA');
         sensors = actuators.sensores;
+
+        actuators.arduinos.forEach((item) => {
+            const port = ports.find(i => i.arduino == item.id)
+            let data = {
+                id: item.id,
+                name: item.name,
+                path: port.port,
+                isOpen: port.open,
+                error: port.error
+            }
+            arduinos.push(data)
+        })
 
         dispatch({
             type: 'DATA_LOADED',
@@ -23,9 +36,21 @@ const loadDataFromElectron = async(dispatch) => {
             servos: servos,
             c_alterna: c_alterna,
             sensors: sensors,
-            ports: ports
         })
 
+    }catch(error){
+        console.log(error)
+    }
+}
+
+const verifyPorts = async(dispatch) => {
+    try{
+        const ports = await window.api.getEnabledSerial();
+        console.log(ports)
+        dispatch({
+            type: 'PORT_RECONNECTED',
+            ports: ports
+        })
     }catch(error){
         console.log(error)
     }
@@ -44,9 +69,16 @@ const getSensorsSafety = () => {
     window.api.requestSensorsSafety()
 }
 
+const reconnect = (arduino) => {
+    console.log(`reconnect arduino ${arduino}`)
+    window.api.reconnectPort({arduino})
+}
+
 export {
     loadDataFromElectron,
     writeToSerial,
     getSensorsStatus,
-    getSensorsSafety
+    getSensorsSafety,
+    reconnect,
+    verifyPorts
 }

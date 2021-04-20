@@ -27,6 +27,11 @@ const SCARAReducer = (initialState, action) => {
                 diaphragms: action.diaphragms,
                 peristaltics: action.peristaltics
             }
+        case 'PORT_RECONNECTED':
+            return {
+                ...initialState,
+                arduino_ports: action.ports
+            }
     }
 }
 
