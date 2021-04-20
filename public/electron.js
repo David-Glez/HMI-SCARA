@@ -80,6 +80,9 @@ parser.on('data', (data) => {
     arduinoSafetyResponse.send('sensors-safety-status', sensors)
 })
 
+serialPort.arduino_1.on('error', (error) => {
+    console.log(`this error 1: ${error}`)
+})
 
 let mainWindow;
 

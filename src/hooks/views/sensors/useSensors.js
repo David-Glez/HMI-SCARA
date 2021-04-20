@@ -9,12 +9,13 @@ const useSensors = () => {
     const [sensores, setSensores] = useState(sensors);
  
     const getSensors = async() => {
-        window.api.removeListener()
+        window.api.removeListener('sensors-status')
         getSensorsStatus()
-        getSensorsSafety()
+        //getSensorsSafety()
         await window.api.sensorsStatus((e, data) => {
             
             //  data from bandejas
+            console.log(data)
             const received = data;
             const bandejas = received.split('')
             setSensores(sensores.map((item) => {
@@ -25,9 +26,15 @@ const useSensors = () => {
                 })
                 return item 
             }))
+            
         })
-        
+    }
+
+    const getSafetyStatus = async() => {
+        window.api.removeListener('sensors-safety-status')
+        getSensorsSafety()
         await window.api.sensorsSafetyStatus((e, data) => {
+            console.log(data)
             setSensores(sensores.map((item) => {
                 switch(item.name){
                     case 'encoder':
@@ -46,9 +53,10 @@ const useSensors = () => {
                 return item
             }))
         })
-    }
+    }     
 
-    useInterval(getSensors, 50)
+    useInterval(getSensors, 1000)
+    useInterval(getSafetyStatus, 100)
 
     return {
         sensores
