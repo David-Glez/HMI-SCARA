@@ -58,17 +58,6 @@ const Sensors = new r.Struct({
 
 const parser = serialPort.arduino_safety.pipe(new ByteLength({length:  Sensors.size()}))
 
-/*function toHexString(byteArray) {
-    var s = '';
-
-    byteArray.forEach(function(byte) {
-        s += ('0' + (byte & 0xFF).toString(16)).slice(-2).toUpperCase();
-        s += "\t";
-    });
-
-    return s;
-}*/
-
 serialPort.arduino_1.on('data', (data) => {
     arduinoResponse.send('sensors-status', data.toString())
 })
@@ -78,6 +67,10 @@ parser.on('data', (data) => {
     let stream = new r.DecodeStream(data);
     let sensors = Sensors.decode(stream); 
     arduinoSafetyResponse.send('sensors-safety-status', sensors)
+})
+
+serialPort.arduino_safety.on('error', (error) => {
+    console.log(`this error from safety: ${error}`)
 })
 
 serialPort.arduino_1.on('error', (error) => {

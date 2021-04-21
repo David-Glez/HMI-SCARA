@@ -14,8 +14,6 @@ const useSensors = () => {
         //getSensorsSafety()
         await window.api.sensorsStatus((e, data) => {
             
-            //  data from bandejas
-            console.log(data)
             const received = data;
             const bandejas = received.split('')
             setSensores(sensores.map((item) => {
@@ -34,7 +32,6 @@ const useSensors = () => {
         window.api.removeListener('sensors-safety-status')
         getSensorsSafety()
         await window.api.sensorsSafetyStatus((e, data) => {
-            console.log(data)
             setSensores(sensores.map((item) => {
                 switch(item.name){
                     case 'encoder':
