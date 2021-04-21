@@ -27,52 +27,52 @@ const useSensors = () => {
     }, [components])
 
     const getSensors = async() => {
-        window.api.removeListener()
-        
+        window.api.removeListener('sensors-status')
         getSensorsStatus()
-        getSensorsSafety()
-        
-        try{
-            await window.api.sensorsStatus((e, data) => {
-                //  data from bandejas
-                const received = data;
-                const bandejas = received.split('')
-                setSensores(sensores.map((item) => {
-                    bandejas.map((i, index) => {
-                        if(item.name == `bandeja_${index+1}`){
-                            item.value = parseInt(i)
-                        }
-                    })
-                    return item 
-                }))
-            })
+        //getSensorsSafety()
+        await window.api.sensorsStatus((e, data) => {
             
-            await window.api.sensorsSafetyStatus((e, data) => {
-                setSensores(sensores.map((item) => {
-                    switch(item.name){
-                        case 'encoder':
-                            item.value = data.encoderPos
-                            break;
-                        case 'ultrasonico':
-                            item.value = data.limitReached
-                            break;
-                        case 'distancia_analogico':
-                            item.value = data.adcVal
-                            break;
-                        case 'distancia_digital':
-                            item.value = data.detected
-                            break;
+            const received = data;
+            const bandejas = received.split('')
+            setSensores(sensores.map((item) => {
+                bandejas.map((i, index) => {
+                    if(item.name == `bandeja_${index+1}`){
+                        item.value = parseInt(i)
                     }
-                    return item
-                }))
-            })
-        }catch(error){
-            console.log(error)
-        }
+                })
+                return item 
+            }))
+            
+        })
     }
 
-    useInterval(getSensors, closedPort, 50)
-    
+    const getSafetyStatus = async() => {
+        window.api.removeListener('sensors-safety-status')
+        getSensorsSafety()
+        await window.api.sensorsSafetyStatus((e, data) => {
+            setSensores(sensores.map((item) => {
+                switch(item.name){
+                    case 'encoder':
+                        item.value = data.encoderPos
+                        break;
+                    case 'ultrasonico':
+                        item.value = data.limitReached
+                        break;
+                    case 'distancia_analogico':
+                        item.value = data.adcVal
+                        break;
+                    case 'distancia_digital':
+                        item.value = data.detected
+                        break;
+                }
+                return item
+            }))
+        })
+    }     
+
+    useInterval(getSensors, 1000)
+    useInterval(getSafetyStatus, 100)
+
     return {
         closedPort,
         sensores
