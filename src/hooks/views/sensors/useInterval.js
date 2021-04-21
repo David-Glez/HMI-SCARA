@@ -1,10 +1,10 @@
 import {useRef, useEffect} from 'react';
 
-const useInterval = (arduino1, closedPort, delay) => {
+const useInterval = (arduino, closedPort, delay) => {
     const arduinoCallback = useRef();
-
+    
     useEffect(() => {
-        arduinoCallback.current = arduino1;
+        arduinoCallback.current = arduino;
     });
 
     useEffect(() => {
@@ -12,10 +12,13 @@ const useInterval = (arduino1, closedPort, delay) => {
         const callArduino = () => {
             arduinoCallback.current();
         };
-        if(closedPort !== undefined && closedPort == false){
-            interval = setInterval(callArduino, delay);
-        }else{
-            console.log('nothing to do')
+
+        if(closedPort != undefined){
+            if(closedPort == true){
+                interval = setInterval(callArduino, delay);
+            }else{
+                console.log(`nothing to do in ${delay}`)
+            }
         }
         
         return () => {

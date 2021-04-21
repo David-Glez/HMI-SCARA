@@ -14,9 +14,14 @@ const Sensors = (props) => {
                     <div className = 'col-md-12'>
                         {(closedPort != undefined) && (
                             <>
-                            {closedPort && (
+                            {!closedPort.arduino1 && (
                                 <div className = "alert alert-danger" role = "alert">
-                                    Puerto desconectado! Verifique conexión
+                                    Puerto desconectado! Verifique conexión de Arduino 1
+                                </div>
+                            )}
+                            {!closedPort.arduinoSafety && (
+                                <div className = "alert alert-danger" role = "alert">
+                                    Puerto desconectado! Verifique conexión de Arduino Safety
                                 </div>
                             )}
                             </>

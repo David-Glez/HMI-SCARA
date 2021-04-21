@@ -12,24 +12,20 @@ const useSensors = () => {
     const arduino1 = components.arduinos.find(i => i.id == 1);
     const arduinoSafety = components.arduinos.find(i => i.id == 3);
     const [sensores, setSensores] = useState(sensors);
-    const [closedPort, setClosedPort] = useState(undefined);
+    const [closedPort, setClosedPort] = useState({
+        arduino1: undefined,
+        arduinoSafety: undefined
+    });
+
 
     useEffect(() => {
-        if(arduinoSafety != undefined && arduino1 != undefined){
-            console.log(arduinoSafety)
-            console.log(arduino1)
-            if(arduinoSafety.isOpen == false || arduino1.isOpen == false){
-                setClosedPort(true)
-            }else{
-                setClosedPort(false)
-            }
-        }
-    }, [components])
+        setClosedPort(closedPort => ({...closedPort, ['arduino1']:arduino1.isOpen}))
+        setClosedPort(closedPort => ({...closedPort, ['arduinoSafety']:arduinoSafety.isOpen}))
+    }, [])
 
     const getSensors = async() => {
         window.api.removeListener('sensors-status')
         getSensorsStatus()
-        //getSensorsSafety()
         await window.api.sensorsStatus((e, data) => {
             
             const received = data;
@@ -70,8 +66,8 @@ const useSensors = () => {
         })
     }     
 
-    useInterval(getSensors, 1000)
-    useInterval(getSafetyStatus, 100)
+    useInterval(getSensors, arduino1.isOpen, 1000)
+    useInterval(getSafetyStatus, arduinoSafety.isOpen, 100)
 
     return {
         closedPort,

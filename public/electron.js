@@ -36,6 +36,7 @@ serialPort.arduino_2.on('open', (error) => {
 
 serialPort.arduino_safety.on('open', (error) => {
     const arduino = ports.find(ard => ard.arduino == 3)
+    console.log(arduino)
     if(error){
         console.log(error)
     }
