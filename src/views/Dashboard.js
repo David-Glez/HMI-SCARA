@@ -1,6 +1,5 @@
 import React from 'react';
 import ArduinoCard from '../components/cards/ArduinoCard';
-import ArduinoControlCard from '../components/cards/ArduinoControlCard';
 import {useSCARAState} from '../context';
 
 const Dashboard = (props) => {
@@ -23,9 +22,7 @@ const Dashboard = (props) => {
                 </div>
                 <div className = 'row'>
                     <div className = 'col-md-6'>
-                        <ArduinoControlCard
-                            arduinos = {arduino}
-                        />
+                        
                     </div>
                 </div>
             </div>

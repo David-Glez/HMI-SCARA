@@ -3,7 +3,6 @@ import React from 'react';
 const ArduinoControlCard = (props) => {
 
     const arduinos = props.arduinos;
-    console.log(arduinos)
 
     return(
         <>
@@ -18,17 +17,22 @@ const ArduinoControlCard = (props) => {
                 </div>
             </div>
             <div className = 'card-body'>
-                <div className = 'row'>
-                    <ul className ="list-group">
-                        {arduinos.map((item, index) => {
-                            return(
-                                <li key = {index}>
-                                    
-                                </li>
-                            )
-                        })}
-                    </ul>
-                </div>
+                {arduinos.map((item, index) => {
+                    return(
+                        <div className = 'row mt-4' key = {index}>
+                            <div className = 'col-md-4'>
+                                <span>
+                                    {item.name}
+                                </span>
+                            </div>
+                            <div className = 'col-md-8'>
+                                <button className = 'btn'>
+                                    Reconectar
+                                </button>
+                            </div>
+                        </div>
+                    )
+                })}
             </div>
         </div>
         </>

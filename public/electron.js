@@ -36,12 +36,12 @@ serialPort.arduino_2.on('open', (error) => {
 
 serialPort.arduino_safety.on('open', (error) => {
     const arduino = ports.find(ard => ard.arduino == 3)
-    console.log(arduino)
     if(error){
         console.log(error)
     }
     arduino.error = error;
     arduino.open = serialPort.arduino_safety.isOpen;
+    console.log(arduino)
 })
 
 const Sensors = new r.Struct({
@@ -66,6 +66,10 @@ parser.on('data', (data) => {
 
 serialPort.arduino_safety.on('error', (error) => {
     console.log(`this error from safety: ${error}`)
+})
+
+serialPort.arduino_safety.on('close', (_) => {
+    console.log('port safety closed')
 })
 
 serialPort.arduino_1.on('error', (error) => {
@@ -149,8 +153,9 @@ ipc.on('request-sensors-safety', (e, args) => {
     arduinoSafetyResponse = e.sender
 })
 
-ipc.handle('reconnect-arduino', (e, args) => {
-    serialPort.connectArduino(args.arduino)
+ipc.on('reconnect-arduino', (e, args) => {
+    serialPort.connectArduino(args)
+    //e.sender.send('port-reconnected', true)
 })
 
 

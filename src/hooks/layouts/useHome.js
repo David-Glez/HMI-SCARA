@@ -12,15 +12,24 @@ const useHome = () => {
         loadDataFromElectron(dispatch)
     }, [])
 
-    /*const checkPorts = () => {
-        arduinos.forEach((item) => {
-            if(!item.isOpen){
-                console.log(item)
-            }
-        })
+    const reconnect = () => {
+        console.log('reconnecting ...')
     }
 
-    usePorts(checkPorts, 1000)*/
+    useEffect(() => {
+        let reconnectPort = setTimeout(() => {
+            reconnect()
+        }, 1000)
+
+        return () => {
+            clearTimeout(reconnectPort)
+        }
+
+    },  [])
+
+    
+
+    //usePorts(checkPorts, 1000)
 
 }
 
