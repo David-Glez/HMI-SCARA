@@ -130,7 +130,7 @@ app.on('activate', () => {
 */
 /////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-ipc.handle('get-enabled-serial', (e, args) => {
+ipc.handle('get-serial-enabled', (e, args) => {
     return ports;
 });
 

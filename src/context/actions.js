@@ -4,7 +4,7 @@ const loadDataFromElectron = async(dispatch) => {
 
     try{
         actuators = await window.api.getActuatorsList();
-        ports = await window.api.getEnabledSerial();
+        ports = await window.api.getSerialEnabled();
     
         peristaltics = actuators.bombas.filter(i => i.type == 'peristaltic');
         diaphragms = actuators.bombas.filter(i => i.type == 'diaphragm');
