@@ -2,7 +2,7 @@ const { ipcRenderer, contextBridge } = require('electron');
 
 contextBridge.exposeInMainWorld('api', {
     removeListener: (channel) => ipcRenderer.removeAllListeners(channel),
-    getSerialEnabled: (args) => ipcRenderer.invoke('get-enabled-serial'),
+    getSerialEnabled: (args) => ipcRenderer.invoke('get-serial-enabled'),
     getActuatorsList: (args) => ipcRenderer.invoke('get-actuators-list'),
     writeArduino: (args) => ipcRenderer.invoke('write-arduino', args),
     requestSensorsStatus: (args) => ipcRenderer.send('request-sensors-status', args),
