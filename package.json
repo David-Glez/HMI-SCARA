@@ -1,6 +1,6 @@
 {
   "name": "hmi-scara",
-  "version": "1.0.0.200421",
+  "version": "1.0.0",
   "description": "HMI para la programación del SCARA Roboshot",
   "author": "Integra Automation",
   "license": "ISC",

@@ -5,6 +5,7 @@ const useEjes = () => {
 
     const components = useSCARAState();
     const axes = components.steppers.filter(i => i.arduino == 1);
+    console.log(axes)
 
     const [ejes, setEjes] = useState([])
     const [steps, setSteps] = useState([])
@@ -14,6 +15,7 @@ const useEjes = () => {
             let data = {
                 id: item.id,
                 name: item.name,
+                component: item.component,
                 arduino: item.arduino,
                 tag: item.tag,
                 steps: 0,
