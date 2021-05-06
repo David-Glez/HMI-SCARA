@@ -65,15 +65,26 @@ parser.on('data', (data) => {
 })
 
 serialPort.arduino_safety.on('error', (error) => {
-    console.log(`this error from safety: ${error}`)
-})
-
-serialPort.arduino_safety.on('close', (_) => {
-    console.log('port safety closed')
+    const arduino = ports.find(ard => ard.arduino == 3)
+    
+    arduino.error = error;
+    arduino.open = serialPort.arduino_safety.isOpen;
+    console.log(arduino)
 })
 
 serialPort.arduino_1.on('error', (error) => {
-    console.log(`this error 1: ${error}`)
+    const arduino = ports.find(ard => ard.arduino == 1)
+    
+    arduino.error = error;
+    arduino.open = serialPort.arduino_1.isOpen;
+    console.log(arduino)
+})
+
+serialPort.arduino_2.on('error', (error) => {
+    const arduino = ports.find(ard => ard.arduino == 2)
+    arduino.error = error;
+    arduino.open = serialPort.arduino_2.isOpen;
+    console.log(arduino)
 })
 
 let mainWindow;

@@ -12,25 +12,11 @@ const useHome = () => {
         loadDataFromElectron(dispatch)
     }, [])
 
-    const reconnect = () => {
-        console.log('reconnecting ...')
-    }
-
     useEffect(() => {
-        let reconnectPort = setTimeout(() => {
-            reconnect()
-        }, 1000)
-
-        return () => {
-            clearTimeout(reconnectPort)
-        }
-
-    },  [])
-
-    
-
-    //usePorts(checkPorts, 1000)
-
+        window.api.portReconnected((e, data) => {
+            console.log(data)
+        })
+    })
 }
 
 export default useHome;

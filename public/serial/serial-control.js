@@ -65,24 +65,20 @@ const connectArduino = (arduino) => {
             if(isOpen == false){
                 arduino_1.open();
             }
-            isOpen = arduino_1.isOpen;
             break;
         case arduino2:
             isOpen = arduino_2.isOpen;
             if(isOpen == false){
                 arduino_2.open()
             }
-            isOpen = arduino_2.isOpen;
             break;
         case arduinoSafety:
             isOpen = arduino_safety.isOpen;
             if(isOpen == false){
                 arduino_safety.open()
             }
-            isOpen = arduino_safety.isOpen;
             break;
     }
-    return isOpen;
 }
 
 //  open port if necessary

@@ -14,10 +14,10 @@ const usePorts = (callback, delay) => {
             getData.current();
         }
 
-        let interval = setTimeout(refresh, delay);
+        let interval = setInterval(refresh, delay);
 
         return () => {
-            clearTimeout(interval)
+            clearInterval(interval)
         }
 
     }, [])
